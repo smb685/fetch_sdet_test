@@ -1,16 +1,17 @@
-import requests
-import tkinter as tk
-from typing import List, Dict, Union
-from dotenv import load_dotenv
+import requests #<- used for making http requests to fetch data 
+import tkinter as tk # <- this is the possible GUI toolkit to create a simple interface 
+from typing import List, Dict, Union  # <- provies type hints for functions parameteres and returns values
+from dotenv import load_dotenv # <-loads the enviroment variable from .env file
 import os 
 
-load_dotenv()
+load_dotenv()  # <- this function loaded variables from the .env file into the program and it helps store the API keys. securly prevents me from harcoding it in. 
 
-API_KEY = os.getenv("GEO_API_KEY")
+API_KEY = os.getenv("GEO_API_KEY")    # os.getenv("GEO_API_KEY") ; grabs the api key from the enviorment 
 if not API_KEY:
-    raise ValueError("API Key is missing!")
+    raise ValueError("API Key is missing!")  # in the event the key is missing, the error defined will popoulate 
 
-BASE_URL = "http://api.openweathermap.org/geo/1.0/"
+
+BASE_URL = "http://api.openweathermap.org/geo/1.0/" # <- this is just the base url from openweathermap's api
 
 def get_coordinates_by_location(city: str, state: str = "", country: str = "US") -> Dict[str, Union[str, float]]:
     """
