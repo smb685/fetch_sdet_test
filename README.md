@@ -63,3 +63,6 @@ This project is licensed under the MIT License.
 ## Contact
 For any inquiries, reach out to sylvestermbrandon3@gmail.com or on Github at https://github.com/smb685.
 
+## Video 
+
+![Untitled Video February 2, 2025 12_13 AM](https://github.com/user-attachments/assets/c91680ce-8fa1-4a3b-b5c4-e5b55248fd95)
