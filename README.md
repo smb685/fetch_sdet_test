@@ -38,7 +38,7 @@ pip install requests python-dotenv pytest tkinter
 ### Graphical Interface
 1. Run the application:
    ```bash
-   python project.py
+   python3 project.py
    ```
 2. Enter a city/state (e.g., `New York, NY`) or ZIP code (e.g., `10001`).
 3. Click "Fetch Coordinates" to retrieve and display the location data.
