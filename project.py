@@ -1,41 +1,41 @@
-import requests #<- used for making http requests to fetch data 
-import tkinter as tk # <- this is the possible GUI toolkit to create a simple interface 
+import requests #used for making http requests to fetch data 
+import tkinter as tk #this is the possible GUI toolkit to create a simple interface 
 from typing import List, Dict, Union  # <- provies type hints for functions parameteres and returns values
 from dotenv import load_dotenv # <-loads the enviroment variable from .env file
 import os 
 
-load_dotenv()  # <- this function loaded variables from the .env file into the program and it helps store the API keys. securly prevents me from harcoding it in. 
+load_dotenv()  #this function loaded variables from the .env file into the program and it helps store the API keys. securly prevents me from harcoding it in. 
 
 API_KEY = os.getenv("GEO_API_KEY")    # os.getenv("GEO_API_KEY") ; grabs the api key from the enviorment 
 if not API_KEY:
     raise ValueError("API Key is missing!")  # in the event the key is missing, the error defined will popoulate 
 
 
-BASE_URL = "http://api.openweathermap.org/geo/1.0/" # <- this is just the base url from openweathermap's api
+BASE_URL = "http://api.openweathermap.org/geo/1.0/" # this is just the base url from openweathermap's api
 
-def get_coordinates_by_location(city: str, state: str = "", country: str = "US") -> Dict[str, Union[str, float]]:
-    """
-    Fetch latitude and longitude using city and state.
-    """
-    query = f"{city},{state},{country}" if state else f"{city},{country}"
-    url = f"{BASE_URL}direct?q={query}&limit=1&appid={API_KEY}"
-    response = requests.get(url)
-    data = response.json()
+def get_coordinates_by_location(city: str, state: str = "", country: str = "US") -> Dict[str, Union[str, float]]: #Defines a function that retrieves geolocation data using a city name
+
+    """Fetch latitude and longitude using city and state."""
+
+    query = f"{city},{state},{country}" if state else f"{city},{country}" # Builds the query string based on whether a state is provided.
+    url = f"{BASE_URL}direct?q={query}&limit=1&appid={API_KEY}" # Constructs the API request URL for OpenWeatherMap’s geocoding service.
+    response = requests.get(url) # Sends an HTTP GET request to the API.
+    data = response.json() # Parses the response into JSON format.
     
-    if response.status_code == 200 and data:
-        location = data[0]  # Take the first result
+    if response.status_code == 200 and data: # Checks if the request was successful (200 OK) and contains data.
+        location = data[0]  # Extracts the first result from the JSON response.
         return {
-            "place_name": f"{location.get('name')}, {state if state else location.get('state', '')}, {country}",
-            "latitude": location.get("lat"),
-            "longitude": location.get("lon"),
+            "place_name": f"{location.get('name')}, {state if state else location.get('state', '')}, {country}", # "place_name" -> Combines the city name, state (if available), and country.
+            "latitude": location.get("lat"), # "latitude" extracts latitude 
+            "longitude": location.get("lon"), # "longitude" extracts latitude 
         }
-    return {"error": "Location not found or invalid response."}
+    return {"error": "Location not found or invalid response."} # Error message in the event the API call fails
 
-def get_coordinates_by_zip(zip_code: str, country: str = "US") -> Dict[str, Union[str, float]]:
-    """
-    Fetch latitude and longitude using ZIP code.
-    """
-    url = f"{BASE_URL}zip?zip={zip_code},{country}&appid={API_KEY}"
+def get_coordinates_by_zip(zip_code: str, country: str = "US") -> Dict[str, Union[str, float]]: # Defines a function to get coordinates using a ZIP code / zip_code: str Required, ZIP code as a string. Returns a dictionary with coordinates.
+
+    """Fetch latitude and longitude using ZIP code."""
+
+    url = f"{BASE_URL}zip?zip={zip_code},{country}&appid={API_KEY}" #Constructs the API request URL to fetch data by ZIP code.
     response = requests.get(url)
     data = response.json()
 
@@ -45,7 +45,7 @@ def get_coordinates_by_zip(zip_code: str, country: str = "US") -> Dict[str, Unio
             "latitude": data.get("lat"),
             "longitude": data.get("lon"),
         }
-    return {"error": "ZIP code not found or invalid response."}
+    return {"error": "ZIP code not found or invalid response."} # Error message in the event the zip code is invalid or the lookup fails
 
 def fetch_locations(locations: List[str]) -> List[Dict[str, Union[str, float]]]:
     """
